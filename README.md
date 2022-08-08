@@ -1,1 +1,1 @@
-# LaravelNews
+# Laravel GB NEWS aggregator
