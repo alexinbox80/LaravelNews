@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,14 +20,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/hello/{name}', function (string $name) {
-    return 'Hello, ' . $name . '!<br>';
+//include __DIR__ . '/admin.php';
+//RouteServiceProvider.php ....
+
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function (){
+    Route::resource('categories', AdminCategoryController::class);
+    Route::resource('news', AdminNewsController::class);
 });
 
-Route::get('/about', function () {
-    return 'About News Aggregator!';
-});
+//news routes
+Route::get('/news', [NewsController::class, 'index'])
+    ->name('news.index');
 
-Route::get('/news/{id}', function (int $id) {
-    return 'News with id, ' . $id . ' print here!<br>';
-});
+Route::get('/news/{id}', [NewsController::class, 'show'])
+    ->where('id', '\d+')
+    ->name('news.show');
