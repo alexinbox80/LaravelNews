@@ -12,15 +12,34 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function getNews(int $id = null): array
+    public function getCategories(int $id = null): array
     {
-        $news = [];
+        $categoies = [];
+
         $faker = Factory::create();
 
-        if ($id) {
-            return [
-                'category_id' => rand(1, 5),
-                'title'      => $faker->jobTitle,
+        for ($i = 1; $i < 6; $i++) {
+            $categoies[$i] = [
+                'id' => $i,
+                'title' => $faker->jobTitle,
+                'description' => $faker->text(100),
+                'created_at'  => now('Europe/Moscow')
+            ];
+        }
+
+        return $categoies;
+    }
+
+    public function getCategoryNews(int $id = null): array
+    {
+        $news = [];
+
+        $faker = Factory::create();
+
+        for ($i = 1; $i <= 5; $i++) {
+            $news[$i] = [
+                'category_id' => $id,
+                'title'       => $faker->jobTitle,
                 'author'      => $faker->userName,
                 'status'      => 'DRAFT',
                 'description' => $faker->text(100),
@@ -28,9 +47,18 @@ class Controller extends BaseController
             ];
         }
 
-        for ($i = 1; $i <= 10; $i++) {
-            $news[$i] = [
-                'category_id' => rand(1, 5),
+        return $news;
+    }
+
+    public function getNews(int $id = null): array
+    {
+        $news = [];
+
+        $faker = Factory::create();
+
+        if ($id) {
+            $news = [
+                'category_id' => $id,
                 'title'      => $faker->jobTitle,
                 'author'      => $faker->userName,
                 'status'      => 'DRAFT',

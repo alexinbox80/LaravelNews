@@ -11,18 +11,33 @@ class NewsController extends Controller
         //list all news
         $news = $this->getNews();
 
+        //list all categories
+        $categories = $this->getCategories();
+
         return view('news/index', [
-            'newsList' => $news
+            'newsCategories' => $categories
         ]);
     }
 
-    public function show(int $id)
+    public function showNews(int $id)
     {
         //return current news
         $news = $this->getNews($id);
 
-        return view('news/show', [
+        return view('news.showNews', [
+            'id' => $id,
             'news' => $news
+        ]);
+    }
+
+    public function showCategory(int $id)
+    {
+        //return Category by id
+        $category = $this->getCategoryNews($id);
+
+        return view('news/showCategory', [
+            'id' => $id,
+            'category' => $category
         ]);
     }
 }
