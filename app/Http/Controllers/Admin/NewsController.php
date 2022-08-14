@@ -14,7 +14,9 @@ class NewsController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.news.index', [
+            'newsList' => $this->getCategoryNews() //getNews()
+        ]);
     }
 
     /**
@@ -24,7 +26,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.news.create');
     }
 
     /**
@@ -46,8 +48,7 @@ class NewsController extends Controller
      */
     public function show($id)
     {
-        //
-        return 'HERE';
+        return "Some text";
     }
 
     /**
@@ -58,7 +59,7 @@ class NewsController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('admin.news.edit');
     }
 
     /**

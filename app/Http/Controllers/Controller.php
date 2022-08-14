@@ -22,6 +22,7 @@ class Controller extends BaseController
             $categoies[$i] = [
                 'id' => $i,
                 'title' => $faker->jobTitle,
+                'author' => $faker->userName,
                 'description' => $faker->text(100),
                 'created_at'  => now('Europe/Moscow')
             ];
