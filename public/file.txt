@@ -1,0 +1,14 @@
+HTTP/1.0 200 OK
+Cache-Control: no-cache, private
+Content-Type:  application/json
+Date:          Wed, 17 Aug 2022 08:30:34 GMT
+
+{"userName":"asdasdsa","userFeedback":"dasdsadsadas"}
+
+HTTP/1.0 200 OK
+Cache-Control: no-cache, private
+Content-Type:  application/json
+Date:          Wed, 17 Aug 2022 08:31:21 GMT
+
+{"userName":"name","userPhone":"1234567890","userEmail":"mail@mail.ru","userUrl":"http:\/\/qweqwe.ru","userDescription":"131231231"}
+

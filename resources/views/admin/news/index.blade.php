@@ -1,6 +1,9 @@
 @extends('layouts.admin')
 @section('content')
     <h2>Список новостей</h2>
+    <div style="display: flex; justify-content: right;">
+        <a href="{{ route('admin.news.create') }}" class="btn btn-primary">Добавить новость</a>
+    </div><br>
     <div class="table-responsive">
         @include('inc.message', ['message' => 'Это сообщение об ошибки в новостях'])
         <table class="table table-striped table-sm">
@@ -26,7 +29,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6">Записе не найдено</td>
+                    <td colspan="6">Записей не найдено</td>
                 </tr>
             @endforelse
             </tbody>

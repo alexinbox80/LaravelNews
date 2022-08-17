@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,9 +13,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.categories.index', [
-            'newsCategory' => $this->getCategories()
-        ]);
+        return view('news.order');
     }
 
     /**
@@ -26,7 +23,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categories.create');
+        //
     }
 
     /**
@@ -38,11 +35,24 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => ['required', 'string', 'min:5', 'max:255'],
-            'description' => ['required', 'string', 'min:5', 'max:255']
+            'userName' => ['required', 'string', 'min:3', 'max:255'],
+            'userPhone' => ['required', 'numeric', 'digits:10'],
+            'userEmail' => ['required', 'email', 'min:5', 'max:255'],
+            'userUrl' => ['required', 'url', 'min:5', 'max:255'],
+            'userDescription' => ['required', 'string', 'min:5', 'max:255']
         ]);
 
-        return response()->json($request->only(['title', 'description']));
+        $userData = response()->json($request->only([
+            'userName',
+            'userPhone',
+            'userEmail',
+            'userUrl',
+            'userDescription'
+        ]));
+
+        file_put_contents('file.txt', $userData . PHP_EOL . PHP_EOL, FILE_APPEND);
+
+        return $userData;
     }
 
     /**
@@ -64,9 +74,7 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.categories.edit', [
-            'category' => $this->getCategories($id)
-        ]);
+        //
     }
 
     /**

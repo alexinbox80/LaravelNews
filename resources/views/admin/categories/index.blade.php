@@ -1,6 +1,9 @@
 @extends('layouts.admin')
 @section('content')
     <h2>Список категорий</h2>
+    <div style="display: flex; justify-content: right;">
+        <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">Добавить категорию</a>
+    </div><br>
     <div class="table-responsive">
         @include('inc.message', ['message' => 'Это сообщение об ошибки в новостях'])
         <table class="table table-striped table-sm">

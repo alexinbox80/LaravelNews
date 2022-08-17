@@ -18,11 +18,22 @@ class Controller extends BaseController
 
         $faker = Factory::create();
 
+        if ($id) {
+            return [
+                'category_id' => $id,
+                'title'      => $faker->jobTitle(),
+                'author'      => $faker->userName(),
+                'status'      => 'DRAFT',
+                'description' => $faker->text(100),
+                'created_at'  => now('Europe/Moscow')
+            ];
+        }
+
         for ($i = 1; $i < 6; $i++) {
             $categoies[$i] = [
                 'id' => $i,
-                'title' => $faker->jobTitle,
-                'author' => $faker->userName,
+                'title' => $faker->jobTitle(),
+                'author' => $faker->userName(),
                 'description' => $faker->text(100),
                 'created_at'  => now('Europe/Moscow')
             ];
@@ -40,8 +51,8 @@ class Controller extends BaseController
         for ($i = 1; $i <= 5; $i++) {
             $news[$i] = [
                 'category_id' => $id,
-                'title'       => $faker->jobTitle,
-                'author'      => $faker->userName,
+                'title'       => $faker->jobTitle(),
+                'author'      => $faker->userName(),
                 'status'      => 'DRAFT',
                 'description' => $faker->text(100),
                 'created_at'  => now('Europe/Moscow')
@@ -60,8 +71,8 @@ class Controller extends BaseController
         if ($id) {
             $news = [
                 'category_id' => $id,
-                'title'      => $faker->jobTitle,
-                'author'      => $faker->userName,
+                'title'      => $faker->jobTitle(),
+                'author'      => $faker->userName(),
                 'status'      => 'DRAFT',
                 'description' => $faker->text(100),
                 'created_at'  => now('Europe/Moscow')

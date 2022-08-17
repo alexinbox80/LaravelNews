@@ -37,7 +37,12 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => ['required', 'string', 'min:5', 'max:255'],
+            'description' => ['required', 'string', 'min:5', 'max:255']
+        ]);
+
+        return response()->json($request->only(['title', 'description']));
     }
 
     /**
@@ -59,7 +64,9 @@ class NewsController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.news.edit');
+        return view('admin.news.edit', [
+            'news' => $this->getNews($id)
+        ]);
     }
 
     /**

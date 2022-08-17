@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
-use \App\Http\Controllers\AboutController;
+use \App\Http\Controllers\FeedbackController;
+use \App\Http\Controllers\OrderController;
 use App\Http\Controllers\Admin\IndexController as AdminController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
@@ -33,9 +34,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
 });
 
 //news routes
-Route::get('/about', [AboutController::class, 'index'])
-    ->name('news.about');
-
 Route::get('/', [NewsController::class, 'index'])
     ->name('news.index');
 
@@ -48,3 +46,6 @@ Route::get('/category/{id}', [NewsController::class, 'showCategory'])
 Route::get('/news/{id}', [NewsController::class, 'showNews'])
     ->where('id', '\d+')
     ->name('news.showNews');
+
+Route::resource('feedback', FeedbackController::class);
+Route::resource('order', OrderController::class);
