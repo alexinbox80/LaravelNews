@@ -9,7 +9,7 @@ class NewsController extends Controller
     public function index()
     {
         //list all news
-        $news = $this->getNews();
+        //$news = $this->getNews();
 
         //list all categories
         $categories = $this->getCategories();

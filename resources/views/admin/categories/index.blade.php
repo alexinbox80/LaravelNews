@@ -5,7 +5,7 @@
         <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">Добавить категорию</a>
     </div><br>
     <div class="table-responsive">
-        @include('inc.message', ['message' => 'Это сообщение об ошибки в новостях'])
+        @include('inc.message', ['message' => 'Это сообщение об ошибке в новостях'])
         <table class="table table-striped table-sm">
             <thead>
             <tr>
@@ -20,12 +20,12 @@
             <tbody>
             @forelse($newsCategory as $key => $category)
                 <tr>
-                    <td>{{ $key }}</td>
-                    <td>{{ $category['title'] }}</td>
-                    <td>{{ $category['author'] }}</td>
+                    <td>{{ $key + 1 }}</td>
+                    <td>{{ $category->title }}</td>
+                    <td>{{ $category->author }}</td>
                     <td>DRAFT</td>
-                    <td>{{ $category['created_at']->format('d-m-Y H:i') }}</td>
-                    <td><a href="{{ route('admin.categories.edit', ['category' => $key]) }}">Ред.</a> &nbsp; <a href="" style="color: red;">Уд.</a></td>
+                    <td>{{ $category->created_at }}</td>
+                    <td><a href="{{ route('admin.categories.edit', ['category' => $category->id]) }}">Ред.</a> &nbsp; <a href="" style="color: red;">Уд.</a></td>
                 </tr>
             @empty
                 <tr>

@@ -13,11 +13,11 @@
             @csrf
             <div class="form-group">
                 <label for="title">Заголовок</label>
-                <input type="text" class="form-control" name="title" id="title" value="{{ $category['title'] }}">
+                <input type="text" class="form-control" name="title" id="title" value="{{ $category[0]->title }}">
             </div>
             <div class="form-group">
                 <label for="description">Описание</label>
-                <textarea class="form-control" name="description" id="description">{{ $category['description'] }}</textarea>
+                <textarea class="form-control" name="description" id="description">{{ $category[0]->description }}</textarea>
             </div><br>
             <button class="btn btn-success" type="submit">Сохранить</button>
         </form>
