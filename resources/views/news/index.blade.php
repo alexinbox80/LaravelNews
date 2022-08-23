@@ -13,7 +13,7 @@
                 <p class="card-text">{!! $category->description !!}</p>
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                        <a href="{{ route('news.showCategory', ['id' => $key]) }}" class="btn btn-sm btn-outline-secondary">Смотреть подробнее</a>
+                        <a href="{{ route('news.showCategory', ['id' => $category->id]) }}" class="btn btn-sm btn-outline-secondary">Смотреть подробнее</a>
                     </div>
                     <small class="text-muted">{{ $category->author }} - {{ $category->created_at }}</small>
                 </div>
