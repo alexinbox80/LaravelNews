@@ -1,10 +1,11 @@
 <?php
 
 
-$servername = "localhost";
+#$servername = "mysql";
+$servername = "host.docker.internal";
 $username = "sail";
 $password = "password";
-$database = "newsagregator";
+$database = "newsaggregat";
 
 //phpinfo();
 try {
