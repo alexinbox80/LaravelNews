@@ -2,12 +2,9 @@
 
 namespace Database\Seeders;
 
-use DB;
+use Illuminate\Support\Facades\DB;
+use App\Models\News;
 use Faker\Factory;
-use Faker\Provider\Lorem;
-use Faker\Provider\Person;
-use Faker\Provider\ru_RU\Address;
-use Faker\Provider\ru_RU\Text;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -37,11 +34,11 @@ class NewsSeeder extends Seeder
                 'category_id' => rand(1, 10),
                 'title'       => $faker->jobTitle(),
                 'author'      => $faker->userName(),
-                'status'      => 'DRAFT',
+                'status'      => News::DRAFT,
                 'is_private'  => false,
+                'image'       => $faker->imageUrl(),
                 'description' => $faker->text(100),
-                'created_at'  => now('Europe/Moscow'),
-                'updated_at'  => now('Europe/Moscow')
+                'created_at'  => now('Europe/Moscow')
             ];
         }
 

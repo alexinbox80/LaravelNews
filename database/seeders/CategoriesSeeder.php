@@ -32,9 +32,9 @@ class CategoriesSeeder extends Seeder
             $categories[$i] = [
                 'title'       => $faker->jobTitle(),
                 'author'      => $faker->userName(),
+                'image'       => $faker->imageUrl(),
                 'description' => $faker->text(100),
-                'created_at'  => now('Europe/Moscow'),
-                'updated_at'  => now('Europe/Moscow')
+                'created_at'  => now('Europe/Moscow')
             ];
         }
 
