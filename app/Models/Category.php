@@ -4,24 +4,34 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+
+    /**
+     * Атрибуты, которые должны быть преобразованы в дату
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 
     protected $table = "categories";
 
-    private static $selectedFields = ['id', 'title', 'author', 'description', 'created_at'];
+    public static $selectedFields = [
+        'id',
+        'title',
+        'author',
+        'description',
+        'created_at'
+    ];
 
-    public function getCategories(): Collection
-    {
-        return DB::table($this->table)->get(self::$selectedFields);
-    }
-
-    public function getCategoryById(int $id): ?object
-    {
-        return DB::table($this->table)->find($id, self::$selectedFields);
-    }
+    protected $fillable = [
+        'title',
+        'author',
+        'image',
+        'description'
+    ];
 }

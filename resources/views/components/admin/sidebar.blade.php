@@ -19,7 +19,18 @@
                     Новости
                 </a>
             </li>
-
+            <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.order.*')) active @endif" href="{{ route('admin.order.index') }}">
+                    <span data-feather="file" class="align-text-bottom"></span>
+                    Заказы
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.feedback.*')) active @endif" href="{{ route('admin.feedback.index') }}">
+                    <span data-feather="file" class="align-text-bottom"></span>
+                    Отзывы
+                </a>
+            </li>
         </ul>
     </div>
 </nav>

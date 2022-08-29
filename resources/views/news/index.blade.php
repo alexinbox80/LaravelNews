@@ -2,7 +2,7 @@
 @section('title') Список категорий новостей @parent @endsection
 @section('content')
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-    @forelse($newsCategories as $key => $category)
+    @forelse($newsCategories as $category)
     <div class="col">
         <div class="card shadow-sm">
             <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
@@ -24,4 +24,7 @@
     <h2>Записей нет</h2>
     @endforelse
 </div>
+<br>
+<br>
+{{ $newsCategories->links() }}
 @endsection

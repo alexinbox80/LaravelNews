@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use DB;
+use Illuminate\Support\Facades\DB;
 use Faker\Factory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -36,7 +36,6 @@ class OrdersSeeder extends Seeder
                 'url'      => $faker->url(),
                 'description' => $faker->text(100),
                 'created_at'  => now('Europe/Moscow'),
-                'updated_at'  => now('Europe/Moscow')
             ];
         }
 

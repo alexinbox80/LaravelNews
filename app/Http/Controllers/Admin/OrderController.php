@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Models\Order;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -14,7 +15,11 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return view('news.order');
+        $orders = Order::query()->paginate(config('pagination.admin.orders'));
+
+        return view('admin.order', [
+            'orders' => $orders
+        ]);
     }
 
     /**
@@ -35,24 +40,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'min:3', 'max:255'],
-            'phone' => ['required', 'numeric', 'digits:10'],
-            'email' => ['required', 'email', 'min:5', 'max:255'],
-            'url' => ['required', 'url', 'min:5', 'max:255'],
-            'description' => ['required', 'string', 'min:5', 'max:255']
-        ]);
-
-        $order = new Order(
-            $request->only(['name', 'phone', 'email', 'url', 'description'])
-        );
-
-        if($order->save()) {
-            return redirect()->route('order.index')
-                ->with('success', 'Запись успешно добавлена');
-        }
-
-        return back()->with('error', 'Не удалось добавить запись');
+        //
     }
 
     /**

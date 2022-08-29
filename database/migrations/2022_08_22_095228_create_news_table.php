@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('image', 255)->comment('Картинка новости')->nullable();
             $table->boolean('is_private')->default(false)->comment('Доступна ли новость неавторизованным');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

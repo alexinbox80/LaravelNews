@@ -4,33 +4,46 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class News extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+
+    /**
+     * Атрибуты, которые должны быть преобразованы в дату
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 
     public const DRAFT = 'DRAFT';
     public const ACTIVE = 'ACTIVE';
     public const BLOCKED = 'BLOCKED';
 
-    protected $table = "news";
+    protected $fillable = [
+        'category_id',
+        'title',
+        'slug',
+        'author',
+        'status',
+        'image',
+        'description'
+    ];
 
-    private static $selectedFields = ['id', 'category_id', 'title', 'author', 'description', 'created_at'];
-
-    public function getNews(): Collection
+    public function scopeStatus(Builder $query): Builder
     {
-        return DB::table($this->table)->get(self::$selectedFields);
+        return $query->where('status', News::DRAFT)
+            ->orWhere('status', News::ACTIVE);
     }
 
-    public function getNewsByCategoryId($id): Collection
-    {
-        return DB::table($this->table)->where('category_id', '=', $id)->get(self::$selectedFields);
-    }
+    //Relations
 
-    public function getNewsById($id): ?object
+    public function category(): BelongsTo
     {
-        return DB::table($this->table)->find($id, self::$selectedFields);
+        return $this->belongsTo(Category::class);
     }
 }

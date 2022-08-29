@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\News;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -15,7 +17,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = app(Category::class)->getCategories();
+        $categories = Category::query()->paginate(config('pagination.admin.news'));
 
         return view('admin.categories.index', [
             'newsCategory' => $categories
@@ -36,16 +38,24 @@ class CategoryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
         $request->validate([
-            'title' => ['required', 'string', 'min:5', 'max:255'],
-            'description' => ['required', 'string', 'min:5', 'max:255']
+            'title' => ['required', 'string', 'min:5', 'max:255']
         ]);
 
-        return response()->json($request->only(['title', 'description']));
+        $category = new Category(
+            $request->only(['title', 'author', 'image', 'description'])
+        );
+
+        if($category->save()) {
+            return redirect()->route('admin.categories.index')
+                ->with('success', 'Запись успешно добавлена');
+        }
+
+        return back()->with('error', 'Не удалось добавить запись');
     }
 
     /**
@@ -62,13 +72,11 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Category $category
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
-        $category = app(Category::class)->getCategoryById($id);
-
         return view('admin.categories.edit', [
             'category' => $category
         ]);
@@ -77,23 +85,51 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Category $category
+     * @return RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $category->title = $request->input('title');
+        $category->author = $request->input('author');
+        $category->image = $request->input('image');
+        $category->description = $request->input('description');
+
+        if($category->save()) {
+            return redirect()->route('admin.categories.index')
+                ->with('success', 'Запись успешно обновлена');
+        }
+
+        return back()->with('error', 'Не удалось обновить запись');
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Category $category
+     *
+     * @return RedirectResponse
      */
-    public function destroy($id)
+    public function destroy(Request $request,
+                            Category $category): RedirectResponse
     {
-        //
+        $categories = Category::query()->
+        where('id', $category->id)->
+        delete();
+
+        $news = News::query()->
+        where('category_id', $category->id)->
+        delete();
+
+        if ($categories && $news) {
+            // пост не был удален, а был помещен в корзину
+            return redirect()->route('admin.categories.index')
+                ->with('success', 'Категория успешно удалена');
+        }
+
+        return back()->with('error', 'Не удалось удалить категорию');
     }
 }

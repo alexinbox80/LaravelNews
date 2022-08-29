@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Feedback;
 use App\Models\Order;
+use Illuminate\Http\Request;
 
-class OrderController extends Controller
+class FeedbackController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +16,11 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return view('news.order');
+        $feedbacks = Feedback::query()->paginate(config('pagination.admin.feedbacks'));
+
+        return view('admin.feedback', [
+            'feedbacks' => $feedbacks
+        ]);
     }
 
     /**
@@ -35,24 +41,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'min:3', 'max:255'],
-            'phone' => ['required', 'numeric', 'digits:10'],
-            'email' => ['required', 'email', 'min:5', 'max:255'],
-            'url' => ['required', 'url', 'min:5', 'max:255'],
-            'description' => ['required', 'string', 'min:5', 'max:255']
-        ]);
-
-        $order = new Order(
-            $request->only(['name', 'phone', 'email', 'url', 'description'])
-        );
-
-        if($order->save()) {
-            return redirect()->route('order.index')
-                ->with('success', 'Запись успешно добавлена');
-        }
-
-        return back()->with('error', 'Не удалось добавить запись');
+        //
     }
 
     /**

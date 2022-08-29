@@ -5,35 +5,43 @@
         <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">Добавить категорию</a>
     </div><br>
     <div class="table-responsive">
-        @include('inc.message', ['message' => 'Это сообщение об ошибке в новостях'])
+        @include('inc.message')
         <table class="table table-striped table-sm">
             <thead>
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Наименование</th>
                 <th scope="col">Автор</th>
-                <th scope="col">Статус</th>
                 <th scope="col">Дата добавления</th>
                 <th scope="col">Управление</th>
             </tr>
             </thead>
             <tbody>
-            @forelse($newsCategory as $key => $category)
+            @forelse($newsCategory as $category)
                 <tr>
-                    <td>{{ $key + 1 }}</td>
+                    <td>{{ $category->id }}</td>
                     <td>{{ $category->title }}</td>
                     <td>{{ $category->author }}</td>
-                    <td>DRAFT</td>
                     <td>{{ $category->created_at }}</td>
-                    <td><a href="{{ route('admin.categories.edit', ['category' => $category->id]) }}">Ред.</a> &nbsp; <a href="" style="color: red;">Уд.</a></td>
+                    <td>
+                        <div style="display: flex;">
+                            <a class="btn btn-link" href="{{ route('admin.categories.edit', ['category' => $category]) }}">Ред.</a>
+                            <form action="{{ route('admin.categories.destroy', ['category' => $category]) }}" method="post">
+                                <input class="btn btn-link" type="submit" value="Уд." >
+                                @method('delete')
+                                @csrf
+                            </form>
+                        </div>
+                    </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6">Записе не найдено</td>
+                    <td colspan="5">Категорий не найдено</td>
                 </tr>
             @endforelse
             </tbody>
         </table>
+        {{ $newsCategory->links() }}
     </div>
 @endsection
 

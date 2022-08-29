@@ -15,12 +15,13 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->char('name', 150)->comment('Имя заказчика');
-            $table->char('phone', 10)->comment('Телефон заказчика')->nullable();
-            $table->char('email', 150)->comment('Электронная почта заказчика');
-            $table->char('url', 250)->comment('URL страницы');
+            $table->string('name', 150)->comment('Имя заказчика');
+            $table->string('phone', 10)->comment('Телефон заказчика')->nullable();
+            $table->string('email', 150)->comment('Электронная почта заказчика');
+            $table->string('url', 250)->comment('URL страницы');
             $table->text('description')->comment('Описание заказа');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

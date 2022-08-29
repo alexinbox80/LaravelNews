@@ -13,16 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('feedbacks', function (Blueprint $table) {
             $table->id();
-            $table->string('title',255)->comment('Заголовок категории');
-            $table->string('author')->comment('Автор категории');
-            $table->string('image', 255)->comment('Картинка категории')->nullable();
-            $table->text('description')->comment('Текст категории')->nullable();
+            $table->string('name',255)->comment('Имя пользователя');
+            $table->text('description')->comment('Комментарий пользователя');
             $table->timestamps();
             $table->softDeletes();
         });
-
     }
 
     /**
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('feedbacks');
     }
 };

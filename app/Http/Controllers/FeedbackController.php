@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Feedback;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class FeedbackController extends Controller
@@ -35,15 +37,20 @@ class FeedbackController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'userName' => ['required', 'string', 'min:3', 'max:255'],
-            'userFeedback' => ['required', 'string', 'min:5', 'max:255']
+            'name' => ['required', 'string', 'min:3', 'max:255'],
+            'description' => ['required', 'string', 'min:5', 'max:255']
         ]);
 
-        $userData = response()->json($request->only(['userName', 'userFeedback']));
+        $feedback = new Feedback(
+            $request->only(['name', 'description'])
+        );
 
-        file_put_contents('file.txt', $userData . PHP_EOL . PHP_EOL, FILE_APPEND);
+        if($feedback->save()) {
+            return redirect()->route('feedback.index')
+                ->with('success', 'Запись успешно добавлена');
+        }
 
-        return $userData;
+        return back()->with('error', 'Не удалось добавить запись');
     }
 
     /**

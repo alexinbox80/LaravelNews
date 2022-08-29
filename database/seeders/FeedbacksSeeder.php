@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use DB;
+use Illuminate\Support\Facades\DB;
 use Faker\Factory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class CategoriesSeeder extends Seeder
+class FeedbacksSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,28 +16,25 @@ class CategoriesSeeder extends Seeder
      */
     public function run()
     {
-        //
-        DB::table('categories')->insert($this->getData());
+        DB::table('feedbacks')->insert($this->getData());
     }
 
     private function getData()
     {
-        $categories = [];
+        $feedbacks = [];
 
         $faker = Factory::create('ru_RU');
 
         $faker->addProvider(new \Faker\Provider\ru_RU\Person($faker));
 
-        for ($i = 1; $i <= 20; $i++) {
-            $categories[$i] = [
-                'title'       => $faker->jobTitle(),
-                'author'      => $faker->userName(),
-                'image'       => $faker->imageUrl(),
+        for ($i = 1; $i <= 100; $i++) {
+            $feedbacks[$i] = [
+                'name'       => $faker->userName(),
                 'description' => $faker->text(100),
-                'created_at'  => now('Europe/Moscow')
+                'created_at'  => now('Europe/Moscow'),
             ];
         }
 
-        return $categories;
+        return $feedbacks;
     }
 }
