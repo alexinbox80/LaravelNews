@@ -2,7 +2,7 @@
 @section('content')
     <h2>Список отзывов</h2>
     <div style="display: flex; justify-content: right;">
-{{--        <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">Добавить отзыв</a>--}}
+        {{--        <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">Добавить отзыв</a>--}}
     </div><br>
     <div class="table-responsive">
         @include('inc.message')
@@ -23,7 +23,16 @@
                     <td>{{ $feedback->name }}</td>
                     <td>{{ $feedback->description }}</td>
                     <td>{{ $feedback->created_at }}</td>
-                    <td><a href="{{ route('admin.feedback.edit', ['feedback' => $feedback]) }}">Ред.</a> &nbsp; <a href="" style="color: red;">Уд.</a></td>
+                    <td>
+                        <div style="display: flex;">
+                            <a class="btn btn-link" href="{{ route('admin.feedback.edit', ['feedback' => $feedback]) }}">Ред.</a>
+                            <form action="{{ route('admin.feedback.destroy', ['feedback' => $feedback]) }}" method="post">
+                                <input class="btn btn-link" type="submit" value="Уд." >
+                                @method('delete')
+                                @csrf
+                            </form>
+                        </div>
+                    </td>
                 </tr>
             @empty
                 <tr>

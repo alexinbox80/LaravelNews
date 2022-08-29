@@ -2,7 +2,7 @@
 @section('content')
     <h2>Список заказов</h2>
     <div style="display: flex; justify-content: right;">
-{{--        <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">Добавить заказ</a>--}}
+        {{--        <a href="{{ route('admin.categories.create') }}" class="btn btn-primary">Добавить заказ</a>--}}
     </div><br>
     <div class="table-responsive">
         @include('inc.message')
@@ -29,7 +29,16 @@
                     <td>{{ $order->url }}</td>
                     <td>{{ $order->description }}</td>
                     <td>{{ $order->created_at }}</td>
-                    <td><a href="{{ route('admin.order.edit', ['order' => $order]) }}">Ред.</a> &nbsp; <a href="" style="color: red;">Уд.</a></td>
+                    <td>
+                        <div style="display: flex;">
+                            <a class="btn btn-link" href="{{ route('admin.order.edit', ['order' => $order]) }}">Ред.</a>
+                            <form action="{{ route('admin.order.destroy', ['order' => $order]) }}" method="post">
+                                <input class="btn btn-link" type="submit" value="Уд." >
+                                @method('delete')
+                                @csrf
+                            </form>
+                        </div>
+                    </td>
                 </tr>
             @empty
                 <tr>
