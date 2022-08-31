@@ -41,7 +41,6 @@ class News extends Model
     }
 
     //Relations
-
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
