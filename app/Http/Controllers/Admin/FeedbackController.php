@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Feedbacks\EditRequest;
 use App\Models\Feedback;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -71,21 +72,20 @@ class FeedbackController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param EditRequest $request
      * @param Feedback $feedback
      * @return RedirectResponse
      */
-    public function update(Request $request, Feedback $feedback)
+    public function update(EditRequest $request, Feedback $feedback)
     {
-        $feedback->name = $request->input('name');
-        $feedback->description = $request->input('description');
+        $feedback = $feedback->fill($request->validated());
 
         if($feedback->save()) {
             return redirect()->route('admin.feedback.index')
-                ->with('success', 'Отзыв успешно обновлена');
+                ->with('success', __('messages.admin.feedbacks.update.success'));
         }
 
-        return back()->with('error', 'Не удалось обновить отзыв');
+        return back()->with('error', __('messages.admin.feedbacks.update.fail'));
     }
 
     /**
@@ -99,16 +99,14 @@ class FeedbackController extends Controller
     public function destroy(Request $request,
                             Feedback $feedback): RedirectResponse
     {
-        $feedbacks = Feedback::query()->
-        where('id', $feedback->id)->
-        delete();
+        $feedbacks = Feedback::destroy($feedback->id);
 
         if ($feedbacks) {
             // пост не был удален, а был помещен в корзину
             return redirect()->route('admin.feedback.index')
-                ->with('success', 'Отзыв успешно удален');
+                ->with('success', __('messages.admin.feedbacks.destroy.success'));
         }
 
-        return back()->with('error', 'Не удалось удалить отзыв');
+        return back()->with('error', __('messages.admin.feedbacks.destroy.fail'));
     }
 }

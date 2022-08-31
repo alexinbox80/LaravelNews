@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Orders\EditRequest;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -71,24 +72,20 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Order $forder
+     * @param EditRequest $request
+     * @param Order $order
      * @return RedirectResponse
      */
-    public function update(Request $request, Order $order)
+    public function update(EditRequest $request, Order $order): RedirectResponse
     {
-        $order->name = $request->input('name');
-        $order->phone = $request->input('phone');
-        $order->email = $request->input('email');
-        $order->url = $request->input('url');
-        $order->description = $request->input('description');
+        $order = $order->fill($request->validated());
 
         if($order->save()) {
             return redirect()->route('admin.order.index')
-                ->with('success', 'Заказ успешно обновлен');
+                ->with('success', __('messages.orders.update.success'));
         }
 
-        return back()->with('error', 'Не удалось обновить заказ');
+        return back()->with('error', __('messages.orders.update.success'));
     }
 
     /**
@@ -102,17 +99,15 @@ class OrderController extends Controller
     public function destroy(Request $request,
                             Order $order): RedirectResponse
     {
-        $orders = Order::query()->
-        where('id', $order->id)->
-        delete();
+        $orders = Order::destroy($order->id);
 
         if ($orders) {
             // пост не был удален, а был помещен в корзину
             return redirect()->route('admin.order.index')
-                ->with('success', 'Заказ успешно удален');
+                ->with('success', __('messages.orders.destroy.success'));
         }
 
-        return back()->with('error', 'Не удалось удалить заказ');
+        return back()->with('error', __('messages.orders.destroy.fail'));
     }
 
 }

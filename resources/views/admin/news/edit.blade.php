@@ -4,11 +4,7 @@
         <br>
         <h2>Редактировать новость</h2>
 
-        @if($errors->any())
-            @foreach($errors->all() as $error)
-                @include('inc.message', ['message' => $error])
-            @endforeach
-        @endif
+        @include('inc.message')
 
         <form method="post" action="{{ route('admin.news.update', ['news' => $news]) }}">
             @csrf

@@ -1,11 +1,7 @@
 @extends('layouts.admin')
 @section('content')
 
-    @if($errors->any())
-        @foreach($errors->all() as $error)
-            @include('inc.message', ['message' => $error])
-        @endforeach
-    @endif
+    @include('inc.message')
 
     <form method="post" action="{{ route('admin.feedback.update', ['feedback' => $feedback]) }}">
         @csrf

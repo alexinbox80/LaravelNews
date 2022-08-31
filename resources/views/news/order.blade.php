@@ -2,11 +2,7 @@
 @section('title') Форма заказа на получение выгрузки данных из какого-либо источника @parent @endsection
 @section('content')
 
-    @if($errors->any())
-        @foreach($errors->all() as $error)
-            @include('inc.message', ['message' => $error])
-        @endforeach
-    @endif
+    @include('inc.message')
 
     <form method="post" action="{{ route('order.store') }}">
         @csrf

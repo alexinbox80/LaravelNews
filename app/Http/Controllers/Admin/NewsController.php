@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\News\CreateRequest;
+use App\Http\Requests\News\EditRequest;
 use App\Models\News;
 use App\Models\Category;
 use App\Queries\NewsQueryBuilder;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
 class NewsController extends Controller
@@ -39,36 +41,25 @@ class NewsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param CreateRequest $request
      * @param NewsQueryBuilder $builder
      * @return RedirectResponse
      */
     public function store(
-        Request $request,
+        CreateRequest $request,
         NewsQueryBuilder $builder
     ): RedirectResponse {
 
-        $request->validate([
-            'title' => ['required', 'string', 'min:5', 'max:255']
-        ]);
-
         $news = $builder->create(
-            $request->only([
-                'category_id',
-                'title',
-                'author',
-                'status',
-                'image',
-                'description'
-            ])
+            $request->validated()
         );
 
         if($news) {
             return redirect()->route('admin.news.index')
-                ->with('success', 'Запись успешно добавлена');
+                ->with('success', __('messages.admin.news.create.success'));
         }
 
-        return back()->with('error', 'Не удалось добавить запись');
+        return back()->with('error', __('messages.admin.news.create.fail'));
     }
     /**
      * Display the specified resource.
@@ -99,47 +90,54 @@ class NewsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param EditRequest $request
      * @param News $news
      * @param NewsQueryBuilder $builder
      * @return RedirectResponse
      */
     public function update(
-        Request $request,
+        EditRequest $request,
         News $news,
         NewsQueryBuilder $builder
     ): RedirectResponse {
-        if($builder->update($news, $request->only(['category_id',
-            'title', 'author', 'status', 'image', 'description']))) {
+        if($builder->update($news, $request->validated())) {
             return redirect()->route('admin.news.index')
-                ->with('success', 'Запись успешно обновлена');
+                ->with('success', __('messages.admin.news.update.success'));
 
         }
 
-        return back()->with('error', 'Не удалось обновить запись');
+        return back()->with('error', __('messages.admin.news.update.fail'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param Request $request
      * @param News $news
      *
-     * @return RedirectResponse
+     * @return JsonResponse
      */
-    public function destroy(Request $request,
-                              News $news): RedirectResponse
+    public function destroy(News $news): JsonResponse
     {
-        $news = News::query()->
-            where('id', $news->id)->
-            delete();
+//        $news = News::destroy($news->id);
+//
+//        if ($news) {
+//            // пост не был удален, а был помещен в корзину
+//            return redirect()->route('admin.news.index')
+//                ->with('success', 'Новость успешно удалена');
+//        }
+//
+//        return back()->with('error', 'Не удалось удалить новость');
 
-        if ($news) {
-            // пост не был удален, а был помещен в корзину
-            return redirect()->route('admin.news.index')
-                ->with('success', 'Новость успешно удалена');
+        try {
+            $deleted = $news->delete();
+            if ( $deleted === false) {
+                return \response()->json(['status' => 'error'], 400);
+            } else {
+                return \response()->json(['status' => 'ok']);
+            }
+        } catch (\Exception $e) {
+            \Log::error($e->getMessage().' '.$e->getCode());
+            return \response()->json(['status' => 'error'], 400);
         }
-
-        return back()->with('error', 'Не удалось удалить новость');
     }
 }

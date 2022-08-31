@@ -7,7 +7,6 @@ namespace App\Queries;
 use App\Models\News;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 
 final class NewsQueryBuilder
 {
@@ -18,7 +17,7 @@ final class NewsQueryBuilder
         $this->model = News::query();
     }
 
-    public function getNews(): Collection|LengthAwarePaginator
+    public function getNews(): LengthAwarePaginator
     {
         return $this->model
             ->status()

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Categories\CreateRequest;
+use App\Http\Requests\Categories\EditRequest;
 use App\Models\Category;
 use App\Models\News;
 use Illuminate\Http\RedirectResponse;
@@ -37,25 +39,21 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CreateRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(CreateRequest $request): RedirectResponse
     {
-        $request->validate([
-            'title' => ['required', 'string', 'min:5', 'max:255']
-        ]);
-
         $category = new Category(
-            $request->only(['title', 'author', 'image', 'description'])
+            $request->validated()
         );
 
         if($category->save()) {
             return redirect()->route('admin.categories.index')
-                ->with('success', 'Запись успешно добавлена');
+                ->with('success', __('messages.admin.categories.create.success'));
         }
 
-        return back()->with('error', 'Не удалось добавить запись');
+        return back()->with('error', __('messages.admin.categories.create.fail'));
     }
 
     /**
@@ -85,23 +83,20 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param EditRequest $request
      * @param Category $category
      * @return RedirectResponse
      */
-    public function update(Request $request, Category $category)
+    public function update(EditRequest $request, Category $category): RedirectResponse
     {
-        $category->title = $request->input('title');
-        $category->author = $request->input('author');
-        $category->image = $request->input('image');
-        $category->description = $request->input('description');
+        $category = $category->fill($request->validated());
 
         if($category->save()) {
             return redirect()->route('admin.categories.index')
-                ->with('success', 'Запись успешно обновлена');
+                ->with('success',  __('messages.admin.categories.update.success'));
         }
 
-        return back()->with('error', 'Не удалось обновить запись');
+        return back()->with('error', __('messages.admin.categories.update.fail'));
 
     }
 
@@ -116,20 +111,17 @@ class CategoryController extends Controller
     public function destroy(Request $request,
                             Category $category): RedirectResponse
     {
-        $categories = Category::query()->
-        where('id', $category->id)->
-        delete();
+        $categories = Category::destroy($category->id);
 
         $news = News::query()->
         where('category_id', $category->id)->
         delete();
 
-        if ($categories && $news) {
-            // пост не был удален, а был помещен в корзину
+        if ( $categories && $news ) {
             return redirect()->route('admin.categories.index')
-                ->with('success', 'Категория успешно удалена');
+                ->with('success', __('messages.admin.categories.destroy.success'));
         }
 
-        return back()->with('error', 'Не удалось удалить категорию');
+        return back()->with('error', __('messages.admin.categories.destroy.fail'));
     }
 }
