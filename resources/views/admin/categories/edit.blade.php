@@ -20,7 +20,7 @@
             </div>
             <div class="form-group">
                 <label for="image">Изображение</label>
-                <input type="file" class="form-control" name="image" id="image" >
+                <input type="file" class="form-control" name="image" id="image">
             </div>
             <div class="form-group">
                 <label for="description">Описание</label>

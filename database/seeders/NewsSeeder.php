@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use Illuminate\Support\Facades\DB;
 use App\Models\News;
 use Faker\Factory;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class NewsSeeder extends Seeder
