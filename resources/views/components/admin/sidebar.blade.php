@@ -31,6 +31,12 @@
                     Отзывы
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.profiles.*')) active @endif" href="{{ route('admin.profiles.index') }}">
+                    <span data-feather="file" class="align-text-bottom"></span>
+                    Пользователи
+                </a>
+            </li>
         </ul>
     </div>
 </nav>

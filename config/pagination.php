@@ -6,6 +6,7 @@ return [
         'news' => 9,
         'orders' => 15,
         'feedbacks' => 15,
+        'profiles' => 10
     ],
     'user' => [
         'categories' => 12,
