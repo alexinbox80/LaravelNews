@@ -30,10 +30,10 @@ class OrdersSeeder extends Seeder
 
         for ($i = 1; $i <= 100; $i++) {
             $orders[$i] = [
-                'name'       => $faker->userName(),
-                'phone'      => $faker->numerify('##########'),
-                'email'      => $faker->email(),
-                'url'      => $faker->url(),
+                'name'        => $faker->userName(),
+                'phone'       => $faker->numerify('##########'),
+                'email'       => $faker->email(),
+                'url'         => $faker->url(),
                 'description' => $faker->text(100),
                 'created_at'  => now('Europe/Moscow'),
             ];

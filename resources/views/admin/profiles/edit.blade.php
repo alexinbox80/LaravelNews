@@ -3,31 +3,31 @@
 
     @include('inc.message')
 
-    {{--<form method="post" action="{{ route('admin.profiles.update', ['profile' => $user]) }}">--}}
-    <form method="post" action="#">
+    <form method="post" action="{{ route('admin.profiles.update', ['profile' => $profile]) }}">
         @csrf
         @method('put')
+
         <div class="form-group">
             <label for="userName">Имя пользователя</label>
-            <input type="text" class="form-control" name="name" id="name" value="{{ $user->name }}">
+            <input type="text" class="form-control" name="name" id="name" value="{{ $profile->name }}">
         </div>
         <div class="form-group">
             <label for="userEmail">Электронная почта</label>
-            <input type="text" class="form-control" name="email" id="email" value="{{ $user->email }}">
+            <input type="text" class="form-control" name="email" id="email" value="{{ $profile->email }}">
         </div>
         <div class="form-group">
             <label for="password">Пароль</label>
-            <input type="text" class="form-control" name="password" id="password" value="">
+            <input type="password" class="form-control" name="password" id="password" value="">
         </div>
         <div class="form-group">
             <label for="confirmPassword">Пароль еще раз</label>
-            <input type="text" class="form-control" name="confirmPassword" id="confirmPassword" value="">
+            <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" value="">
         </div>
         <div class="form-group">
             <label for="is_admin">Выбрать группу</label>
             <select class="form-control" name="is_admin" id="is_admin">
-                <option value="0">Админ</option>
-                <option value="1" selected>Польз</option>
+                <option @if((int)$profile->is_admin === \App\Models\User::IS_ADMIN) selected @endif value="{{ \App\Models\User::IS_ADMIN }}">Админ</option>
+                <option @if((int)$profile->is_admin === \App\Models\User::IS_USER) selected @endif value="{{ \App\Models\User::IS_USER }}">Польз</option>
             </select>
         </div>
         <br>

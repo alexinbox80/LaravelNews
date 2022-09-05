@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
+
 
 class Admin
 {
@@ -18,7 +20,7 @@ class Admin
     {
         $user = \Auth::user();  // $user = $request->user();
 
-        if ($user->is_admin === false) {
+        if ((int)$user->is_admin !== User::IS_ADMIN) {
             \abort(404);
         }
 
