@@ -6,15 +6,15 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\OrderController;
 
 use App\Http\Controllers\Account\IndexController as AccountController;
-
 use App\Http\Controllers\Admin\IndexController as AdminController;
+use App\Http\Controllers\Admin\ParserController as AdminParserController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\FeedbackController as AdminFeedbackController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
 
-
+use \App\Http\Controllers\SocialProviderController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function() {
     Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'is_admin'], function() {
         Route::get('/', AdminController::class)
             ->name('index');
+        Route::get('/parser', AdminParserController::class)->name('parser');
         Route::resource('categories', AdminCategoryController::class);
         Route::resource('news', AdminNewsController::class);
         Route::resource('feedback', AdminFeedbackController::class);
@@ -68,3 +69,12 @@ Route::resource('order', OrderController::class);
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::group(['middleware' => 'guest'], function() {
+    Route::get('/auth/redirect/{driver}', [SocialProviderController::class, 'redirect'])
+        ->where('driver', '\w+')
+        ->name('social.auth.redirect');
+
+    Route::get('/auth/callback/{driver}', [SocialProviderController::class, 'callback'])
+        ->where('driver', '\w+');
+});

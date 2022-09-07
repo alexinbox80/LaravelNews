@@ -4,6 +4,13 @@
             <li class="nav-item nav-link">
                 <h4>Здравствуйте, {{ Auth::user()->name }}!</h4>
             </li>
+            @isset(Auth::user()->avatar)
+                <li class="nav-item nav-link">
+                    <br>
+                    <img style="width: 200px;" src="{{ Auth::user()->avatar }}" alt="avatar">
+                    <br>
+                </li>
+            @endisset
             <li class="nav-item">
                 <a class="nav-link @if(request()->routeIs('admin.index')) active @endif" aria-current="page" href="{{ route('admin.index') }}">
                     <span data-feather="home" class="align-text-bottom"></span>

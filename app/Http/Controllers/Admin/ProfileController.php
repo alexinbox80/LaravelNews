@@ -6,9 +6,11 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Profiles\EditRequest;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
@@ -62,9 +64,9 @@ class ProfileController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  User $profile
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function edit(User $profile)
+    public function edit(User $profile): View
     {
         return view('admin.profiles.edit', [
             'profile' => $profile
@@ -80,12 +82,11 @@ class ProfileController extends Controller
      */
     public function update(EditRequest $request, User $profile): RedirectResponse
     {
-        $profile = $profile->fill($request->validated());
+        $profile = $profile->fill(array_merge($request->validated(),
+            ['password' => Hash::make($request['password'])]
+        ));
 
-        if($profile->fill([
-                'password' => Hash::make($request['password'])
-            ])->save()) {
-
+        if($profile->save()) {
             return redirect()->route('admin.profiles.index')
                 ->with('success',  __('messages.admin.profile.update.success'));
         }

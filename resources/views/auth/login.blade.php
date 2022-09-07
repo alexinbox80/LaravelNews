@@ -8,6 +8,7 @@
                 <div class="card-header">{{ __('messages.auth.login.title') }}</div>
 
                 <div class="card-body">
+                    <a href="{{ route('social.auth.redirect', ['driver' => 'github']) }}"><strong>{{ __('Вход через GitHub') }}</strong></a>
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
