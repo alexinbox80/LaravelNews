@@ -35,7 +35,7 @@ class NewsSeeder extends Seeder
                 'author'      => $faker->userName(),
                 'status'      => News::DRAFT,
                 'is_private'  => false,
-                'image'       => $faker->imageUrl(),
+                //'image'       => $faker->imageUrl(),
                 'description' => $faker->text(100),
                 'created_at'  => now('Europe/Moscow')
             ];

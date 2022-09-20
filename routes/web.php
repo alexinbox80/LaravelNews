@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\FeedbackController as AdminFeedbackController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
+use App\Http\Controllers\Admin\ResourceController as AdminResourceController;
 
 use \App\Http\Controllers\SocialProviderController;
 /*
@@ -46,6 +47,7 @@ Route::middleware('auth')->group(function() {
         Route::resource('feedback', AdminFeedbackController::class);
         Route::resource('order', AdminOrderController::class);
         Route::resource('profiles', AdminProfileController::class);
+        Route::resource('resources', AdminResourceController::class);
     });
 });
 

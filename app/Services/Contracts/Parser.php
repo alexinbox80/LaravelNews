@@ -24,4 +24,9 @@ interface Parser
      * @param array $array
      */
     public function putParseData(array $array);
+
+    /**
+     * @return void
+     */
+    public function saveParseData(): void;
 }

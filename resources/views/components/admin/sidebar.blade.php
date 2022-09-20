@@ -47,6 +47,12 @@
                     Пользователи
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.resources.*')) active @endif" href="{{ route('admin.resources.index') }}">
+                    <span data-feather="file" class="align-text-bottom"></span>
+                    Парсить новости
+                </a>
+            </li>
         </ul>
     </div>
 </nav>
