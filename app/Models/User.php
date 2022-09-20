@@ -7,10 +7,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+    use SoftDeletes;
+
+    protected $dates = ['deleted_at'];
+
+    public const IS_ADMIN = 0;
+    public const IS_USER = 1;
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +28,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_admin'
     ];
 
     /**
@@ -30,6 +38,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
+        'passwordConfirm',
         'remember_token',
     ];
 
@@ -40,5 +49,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_admin' => 'bool'
     ];
 }
